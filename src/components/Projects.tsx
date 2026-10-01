@@ -44,6 +44,13 @@ export const Projects = () => {
                     alt={project.title}
                     className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-700 ease-out"
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.dataset.fallbackTried) {
+                        target.dataset.fallbackTried = 'true';
+                        target.src = '/images/project_minimal_tech.jpg';
+                      }
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-700"></div>
 

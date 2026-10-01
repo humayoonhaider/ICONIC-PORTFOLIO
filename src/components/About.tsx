@@ -3,6 +3,7 @@ import { Container, SectionHeading, Button } from './UI/Base';
 import { profile } from '../data/profile';
 import { Link } from 'react-router-dom';
 import { FileText } from 'lucide-react';
+import ubaidPortrait from '../assets/images/ubaid_portrait_professional_1790846384015.jpg';
 
 export const About = () => {
   return (
@@ -61,10 +62,17 @@ export const About = () => {
           >
             <div className="relative aspect-[4/5] md:aspect-[3/4] rounded-sm overflow-hidden border border-white/5 shadow-2xl relative z-10 grayscale hover:grayscale-0 transition-all duration-700 ease-out group cursor-pointer">
               <img 
-                src="/src/assets/images/ubaid_portrait_professional_1790846384015.jpg" 
+                src={ubaidPortrait || "/images/ubaid_portrait_professional.jpg"} 
                 alt={profile.name}
                 className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700 ease-out"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.dataset.fallbackTried) {
+                    target.dataset.fallbackTried = 'true';
+                    target.src = '/images/ubaid_portrait_professional.jpg';
+                  }
+                }}
               />
               <div className="absolute inset-0 bg-[#3B82F6]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>

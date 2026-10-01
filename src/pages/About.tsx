@@ -5,6 +5,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { Link } from 'react-router-dom';
 import { FileText, Download } from 'lucide-react';
+import ubaidPortrait from '../assets/images/ubaid_portrait_professional_1790846384015.jpg';
 
 export const AboutPage = () => {
   return (
@@ -85,10 +86,17 @@ export const AboutPage = () => {
                 <div className="aspect-[4/5] rounded-2xl overflow-hidden glass-card p-2">
                   <div className="w-full h-full rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000">
                     <img 
-                      src="/src/assets/images/ubaid_portrait_professional_1790846384015.jpg" 
+                      src={ubaidPortrait || "/images/ubaid_portrait_professional.jpg"} 
                       alt={profile.name}
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.dataset.fallbackTried) {
+                          target.dataset.fallbackTried = 'true';
+                          target.src = '/images/ubaid_portrait_professional.jpg';
+                        }
+                      }}
                     />
                   </div>
                 </div>

@@ -3,6 +3,7 @@ import { Container, Button } from './UI/Base';
 import { profile } from '../data/profile';
 import { ArrowDownRight, Globe, Cpu, Layers, Code2, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import heroTechnicalAbstract from '../assets/images/hero_technical_abstract_1790846301737.jpg';
 
 const TechBadge = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
   <motion.div
@@ -43,10 +44,17 @@ export const Hero = () => {
         {/* Abstract Image with better mask */}
         <div className="absolute top-1/2 right-0 -translate-y-1/2 w-1/2 h-4/5 opacity-20 grayscale pointer-events-none">
           <img 
-            src="/src/assets/images/hero_technical_abstract_1790846301737.jpg" 
+            src={heroTechnicalAbstract || "/images/hero_technical_abstract.jpg"} 
             alt="Technical Background"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.dataset.fallbackTried) {
+                target.dataset.fallbackTried = 'true';
+                target.src = '/images/hero_technical_abstract.jpg';
+              }
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[var(--bg-body)]"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-body)] via-transparent to-[var(--bg-body)]"></div>

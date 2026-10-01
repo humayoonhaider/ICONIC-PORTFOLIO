@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Container, SectionHeading } from './UI/Base';
 import { skills, SkillItem } from '../data/skills';
-import { Eye, Layers } from 'lucide-react';
+import { Eye, Sparkles, ChevronRight, Layers, CheckCircle2 } from 'lucide-react';
 
 // Custom SVG Icons for all technologies
 const TechIcon = ({ name }: { name: string }) => {
@@ -98,45 +98,45 @@ const TechIcon = ({ name }: { name: string }) => {
     "GraphQL": (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-7 sm:h-7">
         <path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z" />
+        <circle cx="12" cy="3" r="1.5" />
+        <circle cx="19.8" cy="7.5" r="1.5" />
+        <circle cx="19.8" cy="16.5" r="1.5" />
+        <circle cx="12" cy="21" r="1.5" />
+        <circle cx="4.2" cy="16.5" r="1.5" />
+        <circle cx="4.2" cy="7.5" r="1.5" />
         <path d="M12 3v18" />
         <path d="M4.2 7.5l15.6 9" />
-        <path d="M19.8 7.5L4.2 16.5" />
-        <circle cx="12" cy="3" r="1.5" fill="currentColor" />
-        <circle cx="19.8" cy="7.5" r="1.5" fill="currentColor" />
-        <circle cx="19.8" cy="16.5" r="1.5" fill="currentColor" />
-        <circle cx="12" cy="21" r="1.5" fill="currentColor" />
-        <circle cx="4.2" cy="16.5" r="1.5" fill="currentColor" />
-        <circle cx="4.2" cy="7.5" r="1.5" fill="currentColor" />
+        <path d="M4.2 16.5l15.6-9" />
       </svg>
     ),
     "Python": (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-7 sm:h-7">
-        <path d="M12 2c2.2 0 4 1.8 4 4v2h-4v1h5c2.2 0 4 1.8 4 4v3c0 2.2-1.8 4-4 4h-2v-4c0-2.2-1.8-4-4-4H6V8c0-2.2 1.8-4 4-4h2z" />
-        <path d="M12 22c-2.2 0-4-1.8-4-4v-2h4v-1H7c-2.2 0-4-1.8-4-4v-3c0-2.2 1.8-4 4-4h2v4c0 2.2 1.8 4 4 4h5v4c0 2.2-1.8 4-4 4h-2z" />
-        <circle cx="9" cy="6" r="1" fill="currentColor" />
-        <circle cx="15" cy="18" r="1" fill="currentColor" />
+        <path d="M12 9H7a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1v-2a2 2 0 0 1 2-2h4a2 2 0 0 0 2-2V9a3 3 0 0 0-3-3h-2" />
+        <path d="M12 15h5a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3h-1v2a2 2 0 0 1-2 2h-4a2 2 0 0 0-2 2v2a3 3 0 0 0 3 3h2" />
+        <circle cx="9" cy="6" r="1" />
+        <circle cx="15" cy="18" r="1" />
       </svg>
     ),
     "PostgreSQL": (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-7 sm:h-7">
-        <ellipse cx="12" cy="6" rx="8" ry="3" />
-        <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
-        <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+        <ellipse cx="12" cy="5" rx="8" ry="3" />
+        <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+        <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
       </svg>
     ),
     "MongoDB": (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-7 sm:h-7">
-        <path d="M12 2c0 0-6 4-6 11s6 9 6 9 6-2 6-9-6-11-6-11z" />
-        <path d="M12 4v16" />
+        <path d="M12 2C9 7 6 11 6 15a6 6 0 0 0 12 0c0-4-3-8-6-13z" />
+        <path d="M12 2v20" />
       </svg>
     ),
     "Git": (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-7 sm:h-7">
-        <circle cx="18" cy="6" r="3" />
-        <circle cx="6" cy="18" r="3" />
         <circle cx="6" cy="6" r="3" />
+        <circle cx="18" cy="18" r="3" />
+        <circle cx="6" cy="18" r="3" />
         <path d="M6 9v6" />
-        <path d="M18 9a9 9 0 0 1-9 9" />
+        <path d="M9 6h4a4 4 0 0 1 4 4v5" />
       </svg>
     ),
     "GitHub": (
@@ -171,7 +171,7 @@ const TechIcon = ({ name }: { name: string }) => {
   return iconMap[name] || fallback;
 };
 
-// Ultra-smooth Skill Card Component with Framer Motion interpolation
+// Ultra-fluid, Zero-Jitter Desktop Hover SkillCard
 const SkillCard = ({
   skill,
   category,
@@ -188,89 +188,104 @@ const SkillCard = ({
 
   return (
     <motion.div
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={onToggle}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative rounded-xl border p-5 transition-colors duration-500 cursor-pointer overflow-hidden flex flex-col justify-between min-h-[195px] select-none ${
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className={`group relative rounded-xl border p-5 cursor-pointer overflow-hidden flex flex-col justify-between h-[225px] select-none transition-colors duration-400 gpu-accelerated ${
         showDetails
-          ? "border-[#3B82F6]/60 bg-[#0c1017] shadow-[0_12px_32px_rgba(59,130,246,0.18)]"
-          : "border-white/5 bg-white/[0.015] hover:border-[#3B82F6]/40 hover:bg-[#0a0d14]"
+          ? "border-[#3B82F6]/60 bg-[#0c1220] shadow-[0_12px_36px_rgba(59,130,246,0.18)]"
+          : "border-white/10 bg-white/[0.02] hover:border-[#3B82F6]/40 hover:bg-[#090d16]"
       }`}
     >
-      {/* Header: Icon, Name, Category */}
-      <div className="flex items-start justify-between gap-3 mb-3">
+      {/* Top Header: Icon, Tech Name, Tagline & Category Badge */}
+      <div className="flex items-start justify-between gap-3 mb-2 shrink-0">
         <div className="flex items-center gap-3">
-          <motion.div 
-            animate={{ 
-              scale: showDetails ? 1.05 : 1,
-              color: showDetails ? "#3B82F6" : "#64748B" 
-            }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className={`p-2 rounded-lg transition-colors duration-400 ${
-              showDetails ? "bg-[#3B82F6]/10" : "bg-white/[0.03]"
+          <div 
+            className={`p-2 rounded-lg transition-all duration-300 ${
+              showDetails 
+                ? "bg-[#3B82F6]/20 text-[#3B82F6] scale-105" 
+                : "bg-white/[0.04] text-[#94A3B8] group-hover:bg-[#3B82F6]/10 group-hover:text-[#3B82F6]"
             }`}
           >
             <TechIcon name={skill.name} />
-          </motion.div>
+          </div>
           <div>
             <h4 className="text-sm font-bold text-white tracking-tight uppercase group-hover:text-[#3B82F6] transition-colors duration-300">
               {skill.name}
             </h4>
-            <p className="text-[10px] font-mono text-[#64748B] uppercase tracking-wider mt-0.5">
+            <p className="text-[10px] font-mono text-[#64748B] uppercase tracking-wider mt-0.5 line-clamp-1">
               {skill.tagline}
             </p>
           </div>
         </div>
 
-        <span className={`text-[8px] font-mono uppercase font-bold px-2 py-0.5 rounded transition-all duration-400 shrink-0 ${
-          showDetails ? "bg-[#3B82F6]/20 text-[#3B82F6] border border-[#3B82F6]/30" : "bg-white/5 text-[#64748B] border border-transparent"
-        }`}>
+        <span 
+          className={`text-[8px] font-mono uppercase font-bold px-2 py-0.5 rounded transition-all duration-300 shrink-0 ${
+            showDetails 
+              ? "bg-[#3B82F6]/20 text-[#3B82F6] border border-[#3B82F6]/40" 
+              : "bg-white/5 text-[#64748B] border border-transparent"
+          }`}
+        >
           {category}
         </span>
       </div>
 
-      {/* Middle/Bottom Area: Detailed Paragraph with Silky Smooth Reveal */}
-      <div className="relative pt-2.5 border-t border-white/5 flex-1 flex flex-col justify-between">
-        <motion.div
-          animate={{
-            opacity: showDetails ? 1 : 0.45,
-            y: showDetails ? 0 : 2
-          }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      {/* Middle Content Area: Absolute Zero-Layout-Shift Smooth Crossfade */}
+      <div className="relative flex-1 overflow-hidden my-1">
+        {/* Layer 1: Resting Preview (smoothly fades out when hovered) */}
+        <div
+          className={`absolute inset-0 flex flex-col justify-center transition-all duration-300 ease-out pointer-events-none ${
+            showDetails 
+              ? "opacity-0 -translate-y-2 invisible" 
+              : "opacity-100 translate-y-0 visible"
+          }`}
         >
-          <p className={`text-[11px] sm:text-[11.5px] leading-relaxed transition-colors duration-300 ${
-            showDetails ? "text-[#E2E8F0] font-normal" : "text-[#94A3B8] line-clamp-2"
-          }`}>
+          <p className="text-[11.5px] leading-relaxed text-[#94A3B8] line-clamp-2">
             {skill.description}
           </p>
-        </motion.div>
+          <div className="flex items-center gap-1.5 text-[9.5px] font-mono text-[#3B82F6]/80 mt-2.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse"></span>
+            <span>Hover to inspect technical details</span>
+            <ChevronRight size={11} className="transition-transform group-hover:translate-x-0.5" />
+          </div>
+        </div>
 
-        {/* Highlight pill bar that smoothly fades in on hover */}
-        <motion.div
-          animate={{
-            opacity: showDetails ? 1 : 0,
-            y: showDetails ? 0 : 4
-          }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-2.5 mt-2 flex items-center justify-between border-t border-white/5 text-[9px] font-mono"
+        {/* Layer 2: Detailed Technical Paragraph (silky smooth fade & glide in on hover) */}
+        <div
+          className={`absolute inset-0 flex flex-col justify-center transition-all duration-300 ease-out pointer-events-none ${
+            showDetails 
+              ? "opacity-100 translate-y-0 visible" 
+              : "opacity-0 translate-y-2 invisible"
+          }`}
         >
-          <span className="text-[#3B82F6] font-bold flex items-center gap-1.5 truncate">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
-            {skill.highlight}
-          </span>
-          <span className="text-[#64748B] text-[8px] uppercase shrink-0">
-            {showDetails ? "Detailed View" : "Hover to inspect"}
-          </span>
-        </motion.div>
+          <p className="text-[11.5px] leading-relaxed text-[#F1F5F9] font-normal">
+            {skill.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom Footer: Feature Tag & Detailed Indicator */}
+      <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[9px] font-mono shrink-0">
+        <span className="text-[#3B82F6] font-bold flex items-center gap-1.5 truncate max-w-[70%]">
+          <span className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+            showDetails ? "bg-[#3B82F6] shadow-[0_0_8px_rgba(59,130,246,0.9)] scale-110" : "bg-[#3B82F6]/60"
+          }`}></span>
+          <span className="truncate">{skill.highlight}</span>
+        </span>
+        <span className={`text-[8px] uppercase tracking-wider transition-colors duration-300 shrink-0 ${
+          showDetails ? "text-[#3B82F6] font-semibold" : "text-[#64748B]"
+        }`}>
+          {showDetails ? "Active View" : "Hover details"}
+        </span>
       </div>
 
       {/* Subtle radial ambient glow on hover */}
-      <motion.div
-        animate={{ opacity: showDetails ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
-        className="absolute -top-12 -right-12 w-32 h-32 bg-[#3B82F6]/15 blur-2xl rounded-full pointer-events-none"
+      <div
+        className={`absolute -top-12 -right-12 w-32 h-32 bg-[#3B82F6]/15 blur-2xl rounded-full pointer-events-none transition-opacity duration-500 ${
+          showDetails ? "opacity-100" : "opacity-0"
+        }`}
       />
     </motion.div>
   );
@@ -289,7 +304,7 @@ export const TechStack = () => {
           <SectionHeading 
             number="02" 
             title="Technical ecosystem."
-            subtitle="A curated selection of technologies and architectural disciplines. Hover over or tap any skill to inspect the in-depth implementation details."
+            subtitle="A curated selection of technologies and architectural disciplines. Hover over or tap any skill on desktop or mobile to inspect the in-depth implementation details smoothly."
           />
 
           {/* Toggle for Expand All / Hover Mode */}
