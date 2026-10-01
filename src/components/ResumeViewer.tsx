@@ -1,8 +1,25 @@
 import { useState } from 'react';
 import { resumeData } from '../data/resume';
-import { useTheme } from '../context/ThemeContext';
 import { trackEvent } from '../utils/analytics';
-import { Download, Printer, Copy, Check, ExternalLink, X, Mail, MapPin, Globe, Github, Briefcase, GraduationCap, Award, Code2 } from 'lucide-react';
+import { 
+  Download, 
+  Printer, 
+  Copy, 
+  Check, 
+  X, 
+  Mail, 
+  MapPin, 
+  Linkedin, 
+  Phone, 
+  Globe, 
+  GraduationCap,
+  Briefcase,
+  Award,
+  Sparkles,
+  Layers,
+  Code
+} from 'lucide-react';
+import ubaidPortrait from '../assets/images/ubaid_portrait_professional_1790846384015.jpg';
 
 interface ResumeViewerProps {
   onClose?: () => void;
@@ -11,7 +28,7 @@ interface ResumeViewerProps {
 
 export const ResumeViewer = ({ onClose, isModal = false }: ResumeViewerProps) => {
   const [copied, setCopied] = useState(false);
-  const { theme, themeLabel } = useTheme();
+  const [styleMode, setStyleMode] = useState<'white' | 'two-tone'>('white');
 
   const handlePrint = () => {
     trackEvent('resume_print_clicked');
@@ -26,30 +43,33 @@ export const ResumeViewer = ({ onClose, isModal = false }: ResumeViewerProps) =>
   const handleCopyText = async () => {
     trackEvent('resume_copy_text_clicked');
     const textResume = `
-${resumeData.name} - ${resumeData.title}
-Email: ${resumeData.email} | Location: ${resumeData.location}
-Website: ${resumeData.website} | GitHub: ${resumeData.github}
+Ubaid Ahmad - Web Developer
+Phone: ${resumeData.phone} | Email: ${resumeData.email}
+Address: ${resumeData.location} | LinkedIn: ${resumeData.linkedin}
 
 PROFESSIONAL SUMMARY:
 ${resumeData.summary}
 
-CORE TECHNICAL SKILLS:
-${resumeData.skills.map(s => `${s.category}: ${s.items.join(', ')}`).join('\n')}
-
 WORK EXPERIENCE:
 ${resumeData.experience.map(exp => `
-${exp.role} | ${exp.company} (${exp.period})
-Location: ${exp.location}
-Key Achievements:
+${exp.period}
+${exp.company} | ${exp.location}
+${exp.role}
 ${exp.highlights.map(h => `- ${h}`).join('\n')}
-Technologies: ${exp.technologies.join(', ')}
 `).join('\n')}
 
 EDUCATION:
-${resumeData.education.map(edu => `${edu.degree} - ${edu.institution} (${edu.year})`).join('\n')}
+${resumeData.education.map(edu => `${edu.degree}
+${edu.institution} (${edu.year}) | ${edu.cgpa || ''}`).join('\n')}
 
-CERTIFICATIONS:
-${resumeData.certifications.map(c => `- ${c}`).join('\n')}
+ACHIEVEMENTS:
+${resumeData.achievements.map(a => `- ${a}`).join('\n')}
+
+SKILLS:
+${resumeData.skills.join(', ')}
+
+LANGUAGES:
+${resumeData.languages.join(', ')}
     `.trim();
 
     try {
@@ -57,249 +77,318 @@ ${resumeData.certifications.map(c => `- ${c}`).join('\n')}
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // Fallback
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     }
   };
 
   return (
-    <div className={`w-full max-w-4xl mx-auto ${isModal ? 'p-1 sm:p-6' : 'py-6 sm:py-8 px-2 sm:px-6'}`}>
+    <div className={`w-full max-w-4xl mx-auto ${isModal ? 'p-1 sm:p-4' : 'py-2 sm:py-6 px-1 sm:px-4'}`}>
       {/* Action Toolbar */}
-      <div className="print:hidden mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-white/10 bg-[var(--bg-section)]/95 backdrop-blur-md sticky top-4 z-20 shadow-xl">
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] animate-pulse"></div>
-          <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold text-white">
-            Resume / Curriculum Vitae
+      <div className="print:hidden mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-xl border border-slate-200 bg-white/95 backdrop-blur-md shadow-md sticky top-16 sm:top-20 z-30">
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider font-bold text-slate-900">
+            Official Curriculum Vitae
           </span>
-          <span className="text-[9px] font-mono text-[#64748B] hidden md:inline">
-            ({themeLabel})
+          <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+            {styleMode === 'white' ? 'Pure White' : 'Executive Two-Tone'}
           </span>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          <button
-            onClick={handleDownload}
-            className="cursor-pointer inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase transition-all duration-200 ease-out shadow-lg shadow-blue-500/20 active:scale-95 hover:-translate-y-0.5"
-            title="Download or save as clean PDF"
-          >
-            <Download size={14} />
-            <span>Download PDF</span>
-          </button>
-
-          <button
-            onClick={handlePrint}
-            className="cursor-pointer inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 rounded-lg border border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/10 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase transition-all duration-200 ease-out active:scale-95 hover:-translate-y-0.5"
-            title="Print Resume"
-          >
-            <Printer size={14} className="text-[#94A3B8]" />
-            <span className="hidden xs:inline sm:inline">Print</span>
-          </button>
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+          {/* Format Switcher */}
+          <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg p-0.5">
+            <button
+              onClick={() => setStyleMode('white')}
+              className={`cursor-pointer px-2 sm:px-2.5 py-1 rounded text-[9px] sm:text-[10px] font-mono uppercase font-bold transition-all ${
+                styleMode === 'white' 
+                  ? 'bg-white text-blue-600 shadow-xs' 
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Pure White
+            </button>
+            <button
+              onClick={() => setStyleMode('two-tone')}
+              className={`cursor-pointer px-2 sm:px-2.5 py-1 rounded text-[9px] sm:text-[10px] font-mono uppercase font-bold transition-all ${
+                styleMode === 'two-tone' 
+                  ? 'bg-slate-900 text-white shadow-xs' 
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Two-Tone
+            </button>
+          </div>
 
           <button
             onClick={handleCopyText}
-            className="cursor-pointer inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 rounded-lg border border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/10 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase transition-all duration-200 ease-out active:scale-95 hover:-translate-y-0.5"
-            title="Copy formatted resume text to clipboard"
+            className="cursor-pointer inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 hover:border-slate-400 bg-white text-slate-700 text-[10px] sm:text-[11px] font-bold uppercase transition-all shadow-xs"
+            title="Copy Resume Plain Text"
           >
-            {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} className="text-[#94A3B8]" />}
-            <span className="hidden xs:inline sm:inline">{copied ? 'Copied!' : 'Copy Text'}</span>
+            {copied ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+            <span>{copied ? 'Copied' : 'Copy'}</span>
+          </button>
+
+          <button
+            onClick={handleDownload}
+            className="cursor-pointer inline-flex items-center gap-1 px-3 sm:px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[10px] sm:text-[11px] font-bold uppercase transition-all shadow-sm"
+            title="Download or Print PDF"
+          >
+            <Download size={12} />
+            <span>PDF</span>
           </button>
 
           {onClose && (
             <button
               onClick={onClose}
-              className="cursor-pointer p-2 rounded-lg border border-white/10 hover:border-white/30 text-[#94A3B8] hover:text-white transition-all duration-200 ease-out ml-auto sm:ml-1 active:scale-95"
-              aria-label="Close Resume"
+              className="cursor-pointer p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-slate-900 ml-auto"
+              aria-label="Close"
             >
-              <X size={18} />
+              <X size={16} />
             </button>
           )}
         </div>
       </div>
 
-      {/* Printable / Viewable Resume Document */}
+      {/* Responsive White Resume Sheet */}
       <div 
         id="resume-printable-document"
-        className="bg-[var(--bg-card)] text-[#F3F4F6] border border-white/10 rounded-2xl p-4 sm:p-8 md:p-14 shadow-2xl relative overflow-hidden print:border-none print:shadow-none print:p-0 print:bg-white print:text-black print:rounded-none transition-colors duration-700"
+        className="bg-white text-slate-900 border border-slate-200 shadow-xl rounded-xl sm:rounded-2xl overflow-hidden print:border-none print:shadow-none print:p-0 print:bg-white print:text-black print:rounded-none"
       >
-        {/* Subtle decorative background watermarks - hidden on print */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#3B82F6]/5 rounded-full blur-[100px] pointer-events-none print:hidden"></div>
-
-        {/* Header Section */}
-        <header className="border-b border-white/10 pb-8 mb-8 print:border-gray-300 print:pb-6 print:mb-6">
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 min-h-auto md:min-h-[960px]">
+          
+          {/* Left Column (Photo, Contact, Skills, Languages) */}
+          <aside className={`md:col-span-4 p-5 sm:p-7 md:p-8 flex flex-col justify-between transition-colors duration-300 ${
+            styleMode === 'two-tone'
+              ? 'bg-[#1E293B] text-white print:bg-[#1E293B] print:text-white'
+              : 'bg-slate-50 border-b md:border-b-0 md:border-r border-slate-200 text-slate-900 print:bg-white print:border-r print:border-gray-200'
+          }`}>
             <div>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white print:text-black mb-2">
-                {resumeData.name}
-              </h1>
-              <p className="text-sm sm:text-lg font-bold text-[#3B82F6] print:text-blue-700 tracking-wide uppercase">
-                {resumeData.title}
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-2 text-[12px] font-mono text-[#94A3B8] print:text-gray-700 md:text-right">
-              <a 
-                href={`mailto:${resumeData.email}`} 
-                className="inline-flex items-center gap-2 hover:text-[#3B82F6] transition-colors md:justify-end break-all"
-              >
-                <Mail size={13} className="text-[#3B82F6] print:text-gray-700 shrink-0" />
-                <span>{resumeData.email}</span>
-              </a>
-              <div className="inline-flex items-center gap-2 md:justify-end">
-                <MapPin size={13} className="text-[#3B82F6] print:text-gray-700 shrink-0" />
-                <span>{resumeData.location}</span>
+              {/* Profile Photo */}
+              <div className="flex justify-center mb-6 sm:mb-8">
+                <div className={`relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-md ${
+                  styleMode === 'two-tone' 
+                    ? 'border-4 border-white/90 bg-slate-800' 
+                    : 'border-4 border-white ring-2 ring-slate-200 bg-slate-100'
+                }`}>
+                  <img 
+                    src={ubaidPortrait || "/images/ubaid_portrait_professional.jpg"} 
+                    alt={resumeData.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.dataset.fallbackTried) {
+                        target.dataset.fallbackTried = 'true';
+                        target.src = '/images/ubaid_portrait_professional.jpg';
+                      }
+                    }}
+                  />
+                </div>
               </div>
-              <a 
-                href={resumeData.github} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-flex items-center gap-2 hover:text-[#3B82F6] transition-colors md:justify-end break-all"
-              >
-                <Github size={13} className="text-[#3B82F6] print:text-gray-700 shrink-0" />
-                <span>github.com/ubaidahmad</span>
-              </a>
-            </div>
-          </div>
 
-          {/* Professional Summary */}
-          <div className="mt-6 pt-6 border-t border-white/5 print:border-gray-200">
-            <p className="text-[13px] sm:text-[14px] text-[#A1A1AA] print:text-gray-800 leading-relaxed font-normal">
-              {resumeData.summary}
-            </p>
-          </div>
-        </header>
-
-        {/* Technical Skills Section */}
-        <section className="mb-10 print:mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Code2 size={16} className="text-[#3B82F6] print:text-blue-700" />
-            <h2 className="text-xs sm:text-sm font-black font-mono tracking-[0.3em] uppercase text-white print:text-black">
-              Core Technical Competencies
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {resumeData.skills.map((skillGroup) => (
-              <div 
-                key={skillGroup.category} 
-                className="p-3.5 rounded-xl border border-white/5 bg-white/[0.02] print:border-gray-200 print:bg-transparent"
-              >
-                <h3 className="text-[11px] font-mono uppercase tracking-widest text-[#3B82F6] print:text-blue-700 font-bold mb-2">
-                  {skillGroup.category}
+              {/* Contact Info */}
+              <div className={`mb-6 sm:mb-8 pb-5 sm:pb-6 border-b ${
+                styleMode === 'two-tone' ? 'border-white/15' : 'border-slate-200'
+              }`}>
+                <h3 className={`text-sm sm:text-base font-bold uppercase tracking-tight mb-3 flex items-center gap-2 ${
+                  styleMode === 'two-tone' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  <Phone size={14} className={styleMode === 'two-tone' ? 'text-blue-400' : 'text-blue-600'} />
+                  <span>Contact</span>
                 </h3>
-                <div className="flex flex-wrap gap-1.5 text-[12px] text-[#D4D4D8] print:text-gray-800 font-medium">
-                  {skillGroup.items.map((item, idx) => (
-                    <span key={item}>
-                      {item}{idx < skillGroup.items.length - 1 && <span className="text-[#64748B] mx-1">·</span>}
+
+                <div className={`space-y-3 text-xs ${
+                  styleMode === 'two-tone' ? 'text-slate-200' : 'text-slate-700'
+                }`}>
+                  <div>
+                    <span className={`block text-[10px] font-mono uppercase font-semibold mb-0.5 ${
+                      styleMode === 'two-tone' ? 'text-slate-400' : 'text-slate-500'
+                    }`}>Phone</span>
+                    <a href={`tel:${resumeData.phone.replace(/[^0-9+]/g, '')}`} className="hover:text-blue-600 font-semibold">
+                      {resumeData.phone}
+                    </a>
+                  </div>
+
+                  <div>
+                    <span className={`block text-[10px] font-mono uppercase font-semibold mb-0.5 ${
+                      styleMode === 'two-tone' ? 'text-slate-400' : 'text-slate-500'
+                    }`}>Email</span>
+                    <a href={`mailto:${resumeData.email}`} className="hover:text-blue-600 font-semibold break-all">
+                      {resumeData.email}
+                    </a>
+                  </div>
+
+                  <div>
+                    <span className={`block text-[10px] font-mono uppercase font-semibold mb-0.5 ${
+                      styleMode === 'two-tone' ? 'text-slate-400' : 'text-slate-500'
+                    }`}>LinkedIn</span>
+                    <a 
+                      href={resumeData.linkedinUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="hover:text-blue-600 font-semibold break-all underline underline-offset-2"
+                    >
+                      {resumeData.linkedin}
+                    </a>
+                  </div>
+
+                  <div>
+                    <span className={`block text-[10px] font-mono uppercase font-semibold mb-0.5 ${
+                      styleMode === 'two-tone' ? 'text-slate-400' : 'text-slate-500'
+                    }`}>Address</span>
+                    <span className={`font-semibold ${
+                      styleMode === 'two-tone' ? 'text-white' : 'text-slate-900'
+                    }`}>
+                      {resumeData.location}
                     </span>
-                  ))}
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Work Experience Section */}
-        <section className="mb-10 print:mb-6">
-          <div className="flex items-center gap-2 mb-6">
-            <Briefcase size={16} className="text-[#3B82F6] print:text-blue-700" />
-            <h2 className="text-xs sm:text-sm font-black font-mono tracking-[0.3em] uppercase text-white print:text-black">
-              Professional Work History
-            </h2>
-          </div>
-
-          <div className="space-y-6">
-            {resumeData.experience.map((exp, idx) => (
-              <div 
-                key={idx}
-                className="relative pl-5 sm:pl-6 border-l-2 border-white/10 print:border-gray-300 pb-2"
-              >
-                <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-[#3B82F6] print:bg-black"></div>
-                
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-2">
-                  <h3 className="text-base sm:text-lg font-bold text-white print:text-black uppercase tracking-tight">
-                    {exp.role} <span className="text-[#3B82F6] print:text-blue-700 font-normal">@ {exp.company}</span>
-                  </h3>
-                  <span className="text-[11px] font-mono text-[#94A3B8] print:text-gray-600 font-bold uppercase tracking-wider">
-                    {exp.period}
-                  </span>
-                </div>
-
-                <p className="text-[11px] font-mono text-[#64748B] print:text-gray-500 mb-3">
-                  {exp.location}
-                </p>
-
-                <ul className="space-y-2 mb-3 text-[13px] text-[#A1A1AA] print:text-gray-800 leading-relaxed list-disc list-outside pl-4">
-                  {exp.highlights.map((point, pIdx) => (
-                    <li key={pIdx}>{point}</li>
+              {/* Skills */}
+              <div className={`mb-6 sm:mb-8 pb-5 sm:pb-6 border-b ${
+                styleMode === 'two-tone' ? 'border-white/15' : 'border-slate-200'
+              }`}>
+                <h3 className={`text-sm sm:text-base font-bold uppercase tracking-tight mb-3 flex items-center gap-2 ${
+                  styleMode === 'two-tone' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  <Code size={14} className={styleMode === 'two-tone' ? 'text-blue-400' : 'text-blue-600'} />
+                  <span>Skills</span>
+                </h3>
+                <ul className="space-y-1.5 text-xs font-medium">
+                  {resumeData.skills.map((skill, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        styleMode === 'two-tone' ? 'bg-blue-400' : 'bg-blue-600'
+                      }`}></span>
+                      <span>{skill}</span>
+                    </li>
                   ))}
                 </ul>
+              </div>
 
-                <div className="flex flex-wrap gap-1.5 text-[11px] font-mono text-[#60A5FA] print:text-gray-700">
-                  <span className="text-[#64748B] mr-1">Stack:</span>
-                  {exp.technologies.map((tech, tIdx) => (
-                    <span key={tech} className="bg-white/5 print:bg-gray-100 px-2 py-0.5 rounded">
-                      {tech}
-                    </span>
+              {/* Languages */}
+              <div className="mb-4">
+                <h3 className={`text-sm sm:text-base font-bold uppercase tracking-tight mb-3 flex items-center gap-2 ${
+                  styleMode === 'two-tone' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  <Globe size={14} className={styleMode === 'two-tone' ? 'text-blue-400' : 'text-blue-600'} />
+                  <span>Languages</span>
+                </h3>
+                <div className="space-y-2 text-xs font-medium">
+                  {resumeData.languages.map((lang, idx) => (
+                    <div key={idx} className="flex justify-between items-center">
+                      <span>{lang}</span>
+                      <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded ${
+                        styleMode === 'two-tone' 
+                          ? 'bg-white/10 text-slate-300' 
+                          : 'bg-slate-200/70 text-slate-700'
+                      }`}>
+                        Proficient
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Education & Certifications Grid */}
-        <div className="grid sm:grid-cols-2 gap-8 pt-6 border-t border-white/10 print:border-gray-300">
-          {/* Education */}
-          <section>
-            <div className="flex items-center gap-2 mb-4">
-              <GraduationCap size={16} className="text-[#3B82F6] print:text-blue-700" />
-              <h2 className="text-xs sm:text-sm font-black font-mono tracking-[0.3em] uppercase text-white print:text-black">
-                Education
-              </h2>
             </div>
-            {resumeData.education.map((edu, idx) => (
-              <div key={idx} className="space-y-1">
-                <h3 className="text-[13px] font-bold text-white print:text-black uppercase">
-                  {edu.degree}
-                </h3>
-                <p className="text-[12px] text-[#3B82F6] print:text-blue-700 font-medium">
-                  {edu.institution}
-                </p>
-                <p className="text-[11px] font-mono text-[#64748B] print:text-gray-500">
-                  {edu.year}
-                </p>
-                {edu.details && (
-                  <p className="text-[12px] text-[#94A3B8] print:text-gray-700 pt-1">
-                    {edu.details}
-                  </p>
-                )}
-              </div>
-            ))}
-          </section>
+          </aside>
 
-          {/* Certifications */}
-          <section>
-            <div className="flex items-center gap-2 mb-4">
-              <Award size={16} className="text-[#3B82F6] print:text-blue-700" />
-              <h2 className="text-xs sm:text-sm font-black font-mono tracking-[0.3em] uppercase text-white print:text-black">
-                Certifications
-              </h2>
+          {/* Right Main Column (Header, Summary, Experience, Education, Achievements) */}
+          <main className="md:col-span-8 p-5 sm:p-7 md:p-10 flex flex-col justify-between bg-white text-slate-900">
+            <div>
+              {/* Header */}
+              <header className="mb-6 sm:mb-8 pb-5 sm:pb-6 border-b border-slate-200">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950 mb-1 sm:mb-2">
+                  {resumeData.name}
+                </h1>
+                <p className="text-sm sm:text-lg font-mono font-bold uppercase tracking-widest text-blue-600">
+                  {resumeData.title}
+                </p>
+              </header>
+
+              {/* Professional Summary */}
+              <section className="mb-6 sm:mb-8">
+                <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-slate-900 mb-2 sm:mb-3 pb-1.5 border-b border-slate-200 flex items-center gap-2">
+                  <Sparkles size={15} className="text-blue-600" />
+                  <span>Professional Summary</span>
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  {resumeData.summary}
+                </p>
+              </section>
+
+              {/* Work Experience */}
+              <section className="mb-6 sm:mb-8">
+                <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-slate-900 mb-3 sm:mb-4 pb-1.5 border-b border-slate-200 flex items-center gap-2">
+                  <Briefcase size={15} className="text-blue-600" />
+                  <span>Work Experience</span>
+                </h2>
+                <div className="space-y-5 sm:space-y-6">
+                  {resumeData.experience.map((exp, idx) => (
+                    <div key={idx} className="relative pl-4 border-l-2 border-blue-600">
+                      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+                        <h3 className="text-xs sm:text-sm font-bold uppercase text-slate-950">
+                          {exp.company} <span className="text-slate-400 font-normal">| {exp.location}</span>
+                        </h3>
+                        <span className="text-[10px] font-mono text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded self-start sm:self-auto">
+                          {exp.period}
+                        </span>
+                      </div>
+                      <p className="text-xs font-semibold text-blue-600 mb-2">
+                        {exp.role}
+                      </p>
+                      <ul className="space-y-1 text-xs text-slate-600">
+                        {exp.highlights.map((h, i) => (
+                          <li key={i} className="flex items-start gap-1.5">
+                            <span className="text-blue-600 font-bold">•</span>
+                            <span>{h}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Education */}
+              <section className="mb-6 sm:mb-8">
+                <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-slate-900 mb-3 pb-1.5 border-b border-slate-200 flex items-center gap-2">
+                  <GraduationCap size={15} className="text-blue-600" />
+                  <span>Education</span>
+                </h2>
+                <div className="space-y-3">
+                  {resumeData.education.map((edu, idx) => (
+                    <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                      <div>
+                        <h3 className="text-xs sm:text-sm font-bold text-slate-900">{edu.degree}</h3>
+                        <p className="text-xs text-slate-600">{edu.institution} {edu.cgpa ? `| ${edu.cgpa}` : ''}</p>
+                      </div>
+                      <span className="text-[10px] font-mono text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded self-start sm:self-auto">
+                        {edu.year}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Achievements & Certifications */}
+              <section>
+                <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-slate-900 mb-3 pb-1.5 border-b border-slate-200 flex items-center gap-2">
+                  <Award size={15} className="text-blue-600" />
+                  <span>Achievements & Certifications</span>
+                </h2>
+                <ul className="space-y-1.5 text-xs text-slate-600">
+                  {resumeData.achievements.map((ach, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold">✓</span>
+                      <span>{ach}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </div>
-            <ul className="space-y-2 text-[12px] text-[#A1A1AA] print:text-gray-800">
-              {resumeData.certifications.map((cert, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-[#3B82F6] print:text-black font-bold">›</span>
-                  <span>{cert}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-
-        {/* Footer Note */}
-        <div className="mt-10 pt-6 border-t border-white/5 print:border-gray-200 text-center text-[10px] font-mono text-[#64748B] print:text-gray-500">
-          Ubaid Ahmad — Curriculum Vitae · References and project codebases available upon request.
+          </main>
         </div>
       </div>
     </div>

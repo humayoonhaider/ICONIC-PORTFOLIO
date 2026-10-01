@@ -1,20 +1,23 @@
 export const experience = [
   {
-    year: "2025 — Present",
-    role: "Senior Software Engineer",
-    company: "Tech Solutions Inc.",
-    description: "Leading the development of complex web applications and mentoring junior developers in modern engineering practices."
-  },
-  {
-    year: "2023 — 2025",
+    year: "NOV 2023 — NOV 2024",
     role: "Web Developer",
-    company: "Digital Craft Agency",
-    description: "Built and maintained high-traffic client websites, focusing on performance optimization and responsive design."
+    company: "Lion Software House",
+    location: "Islamabad",
+    description: "Database design and querying using MySQL. Experienced with HTML, CSS, Bootstrap, and JavaScript. Collaborated with front-end developers, ensured seamless integrations, and maintained enterprise web applications."
   },
   {
-    year: "2021 — 2023",
-    role: "Junior Developer",
-    company: "StartUp Hub",
-    description: "Gained foundational experience in full-stack development, working on MVP products and internal tools."
+    year: "SEP 2021 — FEB 2023",
+    role: "Web Developer (Internship)",
+    company: "SUIT (Sarhad University)",
+    location: "Peshawar",
+    description: "Designed MySQL relational schemas, executed query optimization, and built robust web modules using JavaScript, Bootstrap, HTML, and CSS. Maintained campus web applications."
+  },
+  {
+    year: "FEB 2021 — AUG 2021",
+    role: "Web Developer (Internship)",
+    company: "Trust Tech Solution",
+    location: "Peshawar",
+    description: "Contributed to front-end and back-end web systems. Implemented PHP and MySQL backends alongside responsive HTML5, CSS, Bootstrap, and JavaScript user interfaces."
   }
 ];

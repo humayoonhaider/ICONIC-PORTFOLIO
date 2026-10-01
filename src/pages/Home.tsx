@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Hero } from '../components/Hero';
 import { About } from '../components/About';
@@ -14,9 +16,24 @@ import { SectionDivider, Reveal } from '../components/UI/Base';
 import { TechMarquee } from '../components/UI/TechMarquee';
 
 export const Home = () => {
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  useEffect(() => {
+    const targetSection = searchParams.get('section') || location.hash.replace('#', '');
+    if (targetSection) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetSection);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, location.hash]);
+
   return (
     <main className="bg-[var(--bg-body)] w-full max-w-full overflow-x-hidden">
-      <Navbar />
       <Hero />
       <TechMarquee />
       <SectionDivider />

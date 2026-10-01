@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Container, SectionHeading } from '../components/UI/Base';
+import { Container } from '../components/UI/Base';
 import { projects } from '../data/projects';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { ExternalLink, Github, ArrowRight } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 import { trackEvent } from '../utils/analytics';
 
 export const ProjectsPage = () => {
@@ -23,30 +23,30 @@ export const ProjectsPage = () => {
   }, [activeCategory]);
 
   return (
-    <main className="bg-[var(--bg-body)] w-full max-w-full overflow-x-hidden min-h-screen">
-      <Navbar />
-      
-      <section className="pt-32 pb-16 md:pt-48 md:pb-12 relative overflow-hidden">
+    <main className="bg-white w-full max-w-full overflow-x-hidden min-h-screen text-slate-900">
+      <section className="pt-32 pb-12 md:pt-40 md:pb-16 relative overflow-hidden bg-slate-50/70 border-b border-slate-200">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl"
           >
-            <div className="text-[#3B82F6] font-mono text-[9px] tracking-[0.4em] uppercase mb-6">Case Studies</div>
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter uppercase leading-[1.05] mb-8">
-              Recent <br />
+            <div className="text-blue-600 font-mono text-[10px] tracking-[0.35em] uppercase font-bold mb-4">
+              PORTFOLIO ARCHIVE
+            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-[0.98] mb-6 text-slate-950">
+              Selected <br />
               <span className="text-gradient">creations.</span>
             </h1>
           </motion.div>
 
           {/* Filter UI */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap gap-2 sm:gap-4 mt-8 sm:mt-12 border-b border-white/5 pb-6 sm:pb-8"
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap gap-2 sm:gap-3 mt-8 pt-4"
           >
             {categories.map((cat) => (
               <button
@@ -55,10 +55,10 @@ export const ProjectsPage = () => {
                   setActiveCategory(cat);
                   trackEvent('project_filter_selected', { category: cat });
                 }}
-                className={`text-[10px] font-bold tracking-[0.2em] uppercase px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border transition-all duration-500 cursor-pointer ${
+                className={`text-[10px] font-bold tracking-[0.15em] uppercase px-4 py-2 rounded-full border transition-all duration-200 cursor-pointer ${
                   activeCategory === cat 
-                    ? 'bg-white text-black border-white' 
-                    : 'bg-transparent text-[#64748B] border-white/10 hover:border-white/30 hover:text-white'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm' 
+                    : 'bg-white text-slate-700 border-slate-300 hover:border-blue-500 hover:text-blue-600'
                 }`}
               >
                 {cat}
@@ -68,112 +68,97 @@ export const ProjectsPage = () => {
         </Container>
       </section>
 
-      <section className="pb-32">
+      <section className="py-16 md:py-24 bg-white">
         <Container>
           <motion.div 
             layout
-            className="grid md:grid-cols-2 gap-x-8 gap-y-16"
+            className="grid md:grid-cols-2 gap-8"
           >
             <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project, idx) => (
+              {filteredProjects.map((project) => (
                 <motion.div
                   layout
                   key={project.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="group cursor-pointer"
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="group cursor-pointer p-6 rounded-2xl border border-slate-200 bg-white shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-sm border border-white/5 bg-[#0D0D0D] mb-8">
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
-                      referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        if (!target.dataset.fallbackTried) {
-                          target.dataset.fallbackTried = 'true';
-                          target.src = '/images/project_minimal_tech.jpg';
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/60 to-transparent opacity-60 group-hover:opacity-0 transition-opacity duration-1000"></div>
+                  <div>
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-200 bg-slate-100 mb-6">
+                      <img 
+                        src={project.image} 
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (!target.dataset.fallbackTried) {
+                            target.dataset.fallbackTried = 'true';
+                            target.src = '/images/project_minimal_tech.jpg';
+                          }
+                        }}
+                      />
+                    </div>
+                    
+                    <div className="flex items-center gap-3 mb-3 text-slate-500 font-mono text-[9px] uppercase tracking-[0.35em] font-bold">
+                      <span className="text-blue-600">{project.category}</span>
+                      <span className="w-6 h-px bg-slate-200"></span>
+                      <span>{project.year}</span>
+                    </div>
+
+                    <h3 className="text-xl font-extrabold mb-3 tracking-tight uppercase text-slate-950 group-hover:text-blue-600 transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-slate-600 text-[13px] mb-5 leading-relaxed line-clamp-2 font-normal">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {project.technologies.map((tech) => (
+                        <span 
+                          key={tech}
+                          className="text-[9px] font-mono border border-slate-200 bg-slate-50 hover:border-blue-300 px-2.5 py-1 rounded text-slate-700 font-semibold"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  
-                  <div className="flex items-center gap-3 mb-4 text-[#64748B] font-mono text-[9px] uppercase tracking-[0.4em] font-bold">
-                    <span>{project.category}</span>
-                    <span className="w-6 h-px bg-white/10"></span>
-                    <span>{project.year}</span>
-                  </div>
 
-                  <h3 className="text-2xl font-bold mb-4 tracking-tight uppercase group-hover:text-[#3B82F6] transition-colors duration-500">
-                    {project.title}
-                  </h3>
-
-                  <p className="text-[#94A3B8] text-[14px] mb-5 leading-relaxed line-clamp-2 font-medium">
-                    {project.description}
-                  </p>
-
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-1.5 mb-6">
-                    {project.technologies.map((tech) => (
-                      <span 
-                        key={tech}
-                        className="text-[9px] font-mono border border-white/10 bg-white/[0.02] hover:border-[#3B82F6]/40 hover:text-white px-2.5 py-1 rounded text-[#94A3B8] font-medium transition-colors"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-5 border-t border-white/5 flex-wrap gap-3">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 flex-wrap gap-3">
+                    <div className="flex items-center gap-2.5">
                       <a 
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => trackEvent('project_live_demo_clicked', { project: project.title })}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[10px] font-bold tracking-wider uppercase transition-all shadow-[0_2px_10px_rgba(59,130,246,0.3)] hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
                         <span>Live Demo</span>
                         <ExternalLink size={12} />
                       </a>
 
                       <a 
-                        href={project.githubUrl} 
-                        target="_blank" 
+                        href={project.githubUrl}
+                        target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => trackEvent('project_github_clicked', { project: project.title })}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 hover:border-white/30 bg-white/5 hover:bg-white/10 text-white text-[10px] font-bold tracking-wider uppercase transition-all hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-300 hover:border-blue-600 bg-white hover:bg-blue-50/40 text-slate-700 hover:text-blue-600 text-[10px] font-bold tracking-wider uppercase transition-all"
                       >
-                        <Github size={13} className="text-[#94A3B8]" />
+                        <Github size={12} />
                         <span>Code</span>
                       </a>
                     </div>
-
-                    <a 
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] font-mono uppercase text-[#64748B] hover:text-[#3B82F6] transition-colors flex items-center gap-1 font-bold"
-                    >
-                      <span>Explore</span>
-                      <ArrowRight size={12} />
-                    </a>
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
-          
-          {filteredProjects.length === 0 && (
-            <div className="py-20 text-center">
-              <p className="text-[#64748B] font-mono text-sm uppercase tracking-widest">No projects found in this category.</p>
-            </div>
-          )}
         </Container>
       </section>
 

@@ -6,43 +6,43 @@ import { Link } from 'react-router-dom';
 
 export const Projects = () => {
   return (
-    <section id="projects" className="section-padding bg-[var(--bg-body)] relative">
+    <section id="projects" className="section-padding bg-slate-50/70 relative w-full max-w-full overflow-hidden">
       <Container>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16 md:mb-24">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-10 sm:mb-16 md:mb-20">
           <SectionHeading 
             number="03" 
-            title="Selected artifacts."
-            subtitle="A curated showcase of production applications, architectural systems, and digital interfaces engineered with precision, scalability, and performance."
+            title="Featured Projects."
+            subtitle="A showcase of full-stack institutional systems, web applications, and digital platforms built with modern technology stacks."
           />
           <Link 
             to="/projects" 
-            className="self-start sm:self-auto mb-10 md:mb-16 inline-flex items-center gap-2 text-[10px] font-mono text-[#3B82F6] hover:text-[#60A5FA] uppercase tracking-[0.3em] font-bold group"
+            className="self-start sm:self-auto mb-6 sm:mb-10 md:mb-16 inline-flex items-center gap-2 text-[10px] font-mono text-blue-600 hover:text-blue-700 uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold group"
           >
             <span>View All ({projects.length})</span>
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        <div className="space-y-20 sm:space-y-32 md:space-y-44">
+        <div className="space-y-8 sm:space-y-16 md:space-y-20">
           {projects.map((project, idx) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ 
-                duration: 0.8, 
+                duration: 0.6, 
                 ease: [0.22, 1, 0.36, 1],
               }}
-              viewport={{ once: true, margin: "-40px" }}
-              className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 sm:gap-12 lg:gap-20 lg:items-center group`}
+              viewport={{ once: true, margin: "-30px" }}
+              className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-6 sm:gap-8 lg:gap-12 lg:items-center group p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300`}
             >
-              {/* Project Visual / Mockup */}
-              <div className="flex-1">
-                <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-[#0D0D0D] cursor-pointer shadow-2xl group-hover:border-[#3B82F6]/50 transition-all duration-500">
+              {/* Project Visual */}
+              <div className="flex-1 w-full">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-lg sm:rounded-xl border border-slate-200 bg-slate-100 cursor-pointer shadow-sm group-hover:border-blue-400 transition-all duration-300">
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
                       const target = e.currentTarget;
@@ -52,63 +52,62 @@ export const Projects = () => {
                       }
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/80 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity duration-700"></div>
 
-                  {/* Quick-action overlay buttons on image */}
-                  <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                  {/* Quick-action overlay buttons */}
+                  <div className="absolute top-3 right-3 flex items-center gap-2 z-20">
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-full bg-black/70 hover:bg-[#3B82F6] text-white backdrop-blur-md border border-white/10 transition-all duration-300 hover:scale-110 shadow-lg"
+                      className="p-2 sm:p-2.5 rounded-full bg-slate-900/90 hover:bg-blue-600 text-white backdrop-blur-md transition-all duration-200 shadow-md"
                       title="Open Live Demo"
                       aria-label="Open Live Demo"
                     >
-                      <Globe size={15} />
+                      <Globe size={14} />
                     </a>
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-full bg-black/70 hover:bg-[#3B82F6] text-white backdrop-blur-md border border-white/10 transition-all duration-300 hover:scale-110 shadow-lg"
+                      className="p-2 sm:p-2.5 rounded-full bg-slate-900/90 hover:bg-blue-600 text-white backdrop-blur-md transition-all duration-200 shadow-md"
                       title="View GitHub Repository"
                       aria-label="View GitHub Repository"
                     >
-                      <Github size={15} />
+                      <Github size={14} />
                     </a>
                   </div>
                 </div>
               </div>
 
               {/* Project Info & Tech Stack */}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-4 text-[#64748B] font-mono text-[9px] uppercase tracking-[0.4em] font-bold">
-                  <span className="text-[#3B82F6]">{project.category}</span>
-                  <span className="w-8 h-px bg-white/10"></span>
+              <div className="flex-1 w-full">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-slate-500 font-mono text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.35em] font-bold">
+                  <span className="text-blue-600">{project.category}</span>
+                  <span className="w-4 sm:w-6 h-px bg-slate-200"></span>
                   <span>{project.year}</span>
                 </div>
                 
-                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 tracking-tight uppercase leading-[0.95] group-hover:text-[#3B82F6] transition-colors duration-400">
+                <h3 className="text-lg sm:text-2xl md:text-3xl font-extrabold mb-2 sm:mb-3 tracking-tight uppercase leading-[1.1] text-slate-950 group-hover:text-blue-600 transition-colors duration-200 break-words">
                   {project.title}
                 </h3>
                 
-                <p className="text-[#94A3B8] text-[14px] mb-6 leading-relaxed max-w-lg font-medium">
+                <p className="text-slate-600 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed font-normal">
                   {project.description}
                 </p>
                 
                 {/* Tech Stack Badges */}
-                <div className="mb-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Code2 size={13} className="text-[#3B82F6]" />
-                    <span className="text-[9px] font-mono text-[#64748B] uppercase tracking-[0.3em] font-bold">
+                <div className="mb-4 sm:mb-6">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Code2 size={12} className="text-blue-600" />
+                    <span className="text-[9px] font-mono text-slate-500 uppercase tracking-[0.2em] font-bold">
                       Tech Stack
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5">
                     {project.technologies.map(tech => (
                       <span 
                         key={tech} 
-                        className="text-[10px] font-mono border border-white/10 bg-white/[0.02] hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5 hover:text-white transition-all duration-300 px-3 py-1.5 rounded-md text-[#CBD5E1] font-semibold tracking-tight shadow-sm"
+                        className="text-[9px] sm:text-[10px] font-mono border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded text-slate-700 font-medium"
                       >
                         {tech}
                       </span>
@@ -116,27 +115,27 @@ export const Projects = () => {
                   </div>
                 </div>
                 
-                {/* Action Links: Live Demo & GitHub */}
-                <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+                {/* Action Links */}
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
                   <a 
                     href={project.liveUrl} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-300 shadow-[0_4px_14px_rgba(59,130,246,0.3)] hover:shadow-[0_6px_20px_rgba(59,130,246,0.45)] hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
                     <span>Live Demo</span>
-                    <ExternalLink size={13} />
+                    <ExternalLink size={12} />
                   </a>
 
                   <a 
                     href={project.githubUrl} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full border border-white/15 hover:border-[#3B82F6]/60 bg-white/[0.03] hover:bg-white/[0.08] text-[#F5F7FA] hover:text-white text-[11px] font-bold tracking-wider uppercase transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full border border-slate-300 hover:border-blue-600 bg-white hover:bg-blue-50/40 text-slate-800 hover:text-blue-600 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase transition-all duration-200 active:scale-95 cursor-pointer"
                   >
-                    <Github size={14} className="text-[#94A3B8] group-hover:text-white" />
-                    <span>GitHub Code</span>
+                    <Github size={13} className="text-slate-600" />
+                    <span>Source Code</span>
                   </a>
                 </div>
               </div>

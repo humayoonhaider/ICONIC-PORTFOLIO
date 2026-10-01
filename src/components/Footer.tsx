@@ -1,72 +1,124 @@
 import { Container } from './UI/Base';
-import { profile } from '../data/profile';
-import { SocialLinks } from './UI/SocialLinks';
-import { Link } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
+import { profile, socialLinks } from '../data/profile';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Phone, Mail, Linkedin, ArrowUp } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const { theme, setTheme, themeLabel } = useTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 150);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
-    <footer className="py-12 border-t border-white/5 bg-[var(--bg-body)]">
+    <footer className="py-8 sm:py-12 border-t border-slate-200 bg-white text-slate-900 w-full max-w-full overflow-hidden">
       <Container>
-        <div className="flex flex-col gap-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col gap-6 sm:gap-8">
+          
+          {/* Top Row: Brand & Navigation */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 sm:pb-8 border-b border-slate-100">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-black text-sm tracking-tighter group-hover:bg-[#3B82F6] group-hover:text-white transition-all duration-500">
+              <div className="w-8 h-8 bg-slate-900 text-white flex items-center justify-center rounded-lg font-extrabold text-sm tracking-tighter group-hover:bg-blue-600 transition-colors duration-300">
                 UA
               </div>
-              <span className="text-sm font-bold tracking-tight uppercase group-hover:text-[#3B82F6] transition-colors duration-500">
-                {profile.name}
-              </span>
+              <div className="flex flex-col">
+                <span className="text-sm font-extrabold tracking-tight uppercase group-hover:text-blue-600 transition-colors">
+                  {profile.name}
+                </span>
+                <span className="text-[9px] font-mono text-slate-500 uppercase">
+                  {profile.role} · {profile.location}
+                </span>
+              </div>
             </Link>
 
             {/* Navigation */}
-            <nav className="flex flex-wrap justify-center gap-x-6 sm:gap-x-8 gap-y-2 text-[9px] font-bold uppercase tracking-[0.3em] text-[#64748B]">
-              <Link to="/" className="hover:text-white transition-colors">Index</Link>
-              <Link to="/about" className="hover:text-white transition-colors">Archive</Link>
-              <Link to="/#projects" className="hover:text-white transition-colors">Works</Link>
-              <Link to="/resume" className="hover:text-white transition-colors">Resume</Link>
-              <Link to="/#contact" className="hover:text-white transition-colors">Contact</Link>
+            <nav className="flex flex-wrap gap-x-4 sm:gap-x-8 gap-y-2 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-600">
+              <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
+              <Link to="/about" className="hover:text-blue-600 transition-colors">About</Link>
+              <button 
+                onClick={() => scrollToSection('projects')} 
+                className="cursor-pointer hover:text-blue-600 transition-colors uppercase"
+              >
+                Projects
+              </button>
+              <button 
+                onClick={() => scrollToSection('skills')} 
+                className="cursor-pointer hover:text-blue-600 transition-colors uppercase"
+              >
+                Skills
+              </button>
+              <Link to="/resume" className="hover:text-blue-600 transition-colors text-blue-600 font-extrabold">Resume</Link>
+              <button 
+                onClick={() => scrollToSection('contact')} 
+                className="cursor-pointer hover:text-blue-600 transition-colors uppercase"
+              >
+                Contact
+              </button>
             </nav>
 
-            {/* Socials & Theme Toggle Selector */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              <div className="flex items-center p-1 rounded-full border border-white/10 bg-white/[0.02] text-[9px] font-mono uppercase tracking-wider">
-                <button
-                  onClick={() => setTheme('dark')}
-                  className={`cursor-pointer px-2.5 py-1 rounded-full transition-all ${
-                    theme === 'dark' 
-                      ? 'bg-white text-black font-bold shadow-sm' 
-                      : 'text-[#64748B] hover:text-white'
-                  }`}
-                  title="Switch to Deep Black theme"
-                >
-                  Deep Black
-                </button>
-                <button
-                  onClick={() => setTheme('slate')}
-                  className={`cursor-pointer px-2.5 py-1 rounded-full transition-all ${
-                    theme === 'slate' 
-                      ? 'bg-[#3B82F6] text-white font-bold shadow-sm' 
-                      : 'text-[#64748B] hover:text-white'
-                  }`}
-                  title="Switch to Slate Gray theme"
-                >
-                  Slate Gray
-                </button>
-              </div>
-
-              <SocialLinks />
-            </div>
+            {/* Back to top */}
+            <button
+              onClick={scrollToTop}
+              className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-mono font-bold text-slate-500 hover:text-blue-600 transition-colors"
+            >
+              <span>Back to top</span>
+              <ArrowUp size={14} />
+            </button>
           </div>
 
-          {/* Copyright */}
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 gap-4 text-[#64748B] text-[8px] font-mono uppercase tracking-[0.3em]">
-            <p>© {currentYear} {profile.name} — All rights reserved.</p>
-            <p className="opacity-50">Theme: {themeLabel}</p>
+          {/* Bottom Row: Direct Contact Links & Copyright */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-slate-500 text-center sm:text-left">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-6">
+              <a 
+                href={`tel:${profile.phone.replace(/[^0-9+]/g, '')}`} 
+                className="inline-flex items-center gap-1.5 font-semibold text-slate-700 hover:text-blue-600 transition-colors"
+              >
+                <Phone size={13} className="text-blue-600" />
+                <span>{profile.phone}</span>
+              </a>
+
+              <a 
+                href={`mailto:${profile.email}`} 
+                className="inline-flex items-center gap-1.5 font-semibold text-slate-700 hover:text-blue-600 transition-colors break-all"
+              >
+                <Mail size={13} className="text-blue-600" />
+                <span>{profile.email}</span>
+              </a>
+
+              <a 
+                href={socialLinks.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center gap-1.5 font-semibold text-slate-700 hover:text-blue-600 transition-colors"
+              >
+                <Linkedin size={13} className="text-blue-600" />
+                <span>LinkedIn</span>
+              </a>
+            </div>
+
+            <div className="text-[11px]">
+              © {currentYear} {profile.name}. All rights reserved.
+            </div>
           </div>
         </div>
       </Container>

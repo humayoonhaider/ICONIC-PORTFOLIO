@@ -2,12 +2,13 @@ export const profile = {
   name: "Ubaid Ahmad",
   firstName: "Ubaid",
   lastName: "Ahmad",
-  role: "Software Engineer & Web Developer",
-  tagline: "Building thoughtful software and modern web experiences.",
-  email: "ubaidahmad@gmail.com",
-  location: "Islamabad, Pakistan", // Placeholder, but common for this region
+  role: "Web Developer",
+  tagline: "Fullstack Web Developer with 3+ years of experience crafting modern, scalable web solutions.",
+  email: "ubaidahmad184@gmail.com",
+  phone: "0315-0914087",
+  location: "Mardan, Pakistan",
   availability: "Available for selected projects",
-  bio: "I'm a Software Engineer and Web Developer passionate about turning ideas into reliable digital products. I enjoy working across the frontend and backend, solving technical problems, designing clean interfaces, and building applications that are practical, maintainable, and enjoyable to use.",
+  bio: "As a Fullstack Web Developer with over 03 Years of experience in the development cycle of web projects, I am proficient in several programming languages, including HTML, CSS, JavaScript, Bootstrap, React.js, Node.js, Express.js, MongoDB, and MySQL. My passion for web development drives me to stay updated with the latest trends and technologies, enabling me to create innovative solutions for complex problems.",
   philosophy: [
     {
       id: "01",
@@ -34,7 +35,7 @@ export const profile = {
 
 export const socialLinks = {
   github: "https://github.com",
-  linkedin: "https://linkedin.com",
+  linkedin: "https://www.linkedin.com/in/ubaid-ahmad-a04ba6202",
   twitter: "https://twitter.com",
-  email: "mailto:humayoonkhan003@gmail.com"
+  email: "mailto:ubaidahmad184@gmail.com"
 };
